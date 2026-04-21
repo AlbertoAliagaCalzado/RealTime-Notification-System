@@ -32,6 +32,17 @@ builder.Services.AddScoped<IUnitOfWork>(provider =>
 builder.Services.AddSignalR();
 builder.Services.AddScoped<INotificationDispatcher, SignalRNotificationDispatcher>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 app.UseMiddleware<GiftedIQ.Presentation.Middlewares.ExceptionMiddleware>();
@@ -43,6 +54,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowFrontend");
 
 app.UseAuthorization();
 
