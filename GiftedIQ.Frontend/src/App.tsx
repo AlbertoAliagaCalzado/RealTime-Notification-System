@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { NotificationBadge } from './components/NotificationBadge';
 import { NotificationList } from './components/NotificationList';
+import { NotificationSender } from './components/NotificationSender';
 
 function App() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <div className="min-h-screen min-w-screen bg-gray-100 font-sans">
+    <div className="min-h-screen bg-gray-50 font-sans">
       <nav className="bg-white shadow-sm px-6 py-4 flex justify-between items-center relative">
         <h1 className="text-xl font-bold text-gray-800">GiftedIQ App</h1>
 
@@ -24,11 +25,16 @@ function App() {
         </div>
       </nav>
 
-      <main className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-sm">
-        <h2 className="text-2xl font-semibold mb-4">Bienvenido a tu panel</h2>
-        <p className="text-gray-600">
-          Abre la consola (Swagger) y envía un POST a la API para ver cómo la campana se actualiza y la notificación aparece mágicamente aquí en tiempo real, sin recargar la página.
-        </p>
+      <main className="max-w-xl mx-auto mt-10 p-6">
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Panel de Control</h2>
+          <p className="text-gray-600">
+            Usa este formulario para simular una acción de otro usuario. La notificación viajará a la API REST y volverá instantáneamente a ti vía WebSockets.
+          </p>
+        </div>
+
+        <NotificationSender />
+
       </main>
     </div>
   );
