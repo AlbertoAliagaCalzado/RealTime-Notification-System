@@ -91,3 +91,27 @@
 - Justificación: Mantiene la capa de Aplicación separada de la web. Los Handlers no tienen que saber nada sobre HTTP. Es responsabilidad exclusiva de la capa de presentación interpretar ese resultado y cumplir con los estándares de diseño.
 
 - Trade-off: El controlador debe contener un mínimo de lógica condicional en lugar de simplemente pasar los datos.
+
+13. Persistencia Ignorante (Persistence Ignorance) mediante EF Core
+
+- Decisión: Mantener las entidades de dominio completamente libres de atributos o decoradores (como [Table], [Key], [Column]). En su lugar, toda la configuración de la base de datos se realiza en la capa de Infraestructura usando el ModelBuilder del DbContext.
+
+- Justificación: Cumple con el requisito de que el dominio sea independiente de librerías externas. Si mañana se decide cambiar o migrar a una nueva base de datos, Notification no sufrirá ni un cambio.
+
+- Trade-off: Requiere escribir y mantener la configuración de mapeo manualmente en el DbContext (dos archivos en lugar de uno).
+
+14. Mapeo con Value Conversions
+
+Decisión: Utilizar el mecanismo de conversiones HasConversion para traducir NotificationId a un tipo primitivo GUID al guardar en la base de datos, y viceversa al leer.
+
+Justificación: Permite mantener el tipado fuerte en el dominio (ayuda al programador), mientras se garantiza la eficiencia de las consultas en la base de datos.
+
+Trade-off: Es necesario configurar estas conversiones explícitamente por cada Value Object.
+
+15. Uso de Base de Datos In-Memory
+
+- Decisión: Utilizar la memoria interna de la API para el desarrollo inicial y la demostración del funcionamiento.
+
+- Justificación: Se requiere que el "happy path" sea demostrable y se permite el uso de datos semilla. Una base de datos en memoria reduce drásticamente la fricción inicial para levantar el proyecto en local (no requiere instalar SQL Server ni configurar contenedores Docker complejos de base de datos de forma inmediata), permitiendo evaluar la arquitectura y el código funcional rápidamente.
+
+- Trade-off: No es una base de datos relacional real (no valida restricciones de integridad referencial complejas), por lo que antes de ir a producción, se entiende que debería cambiar por un proveedor de base de datos.

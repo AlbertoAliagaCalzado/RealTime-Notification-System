@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using GiftedIQ.Application.Commands.CreateNotification;
+using GiftedIQ.Application.Queries.GetNotificationById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
