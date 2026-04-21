@@ -123,3 +123,11 @@ Trade-off: Es necesario configurar estas conversiones explícitamente por cada V
 - Justificación: Garantiza que el cliente siempre reciba una respuesta en formato JSON coherente, incluso ante errores inesperados. Esto evita la fuga de información sensible y captura todos los posibles errores.
 
 - Trade-off: Centralizar el manejo de errores puede ocultar detalles específicos si no se categorizan bien las excepciones, pero mejora drásticamente la mantenibilidad y la experiencia del usuario de la API.
+
+17. Comunicación en Tiempo Real mediante SignalR
+
+- Decisión: Implementar WebSockets usando SignalR y exponer un Hub para el envío de eventos en tiempo real al cliente.
+
+- Justificación: Se requiere proveer notificaciones push / web en tiempo real. SignalR maneja automáticamente la negociación de protocolos y facilita la gestión de conexiones concurrentes. Se sigue respetando la Arquitectura Hexagonal.
+
+- Trade-off: Añade un estado de conexión mantenido en el servidor. Si la aplicación escala a múltiples servicios en el futuro, requerirá configurar un sistema de colas para sincronizar los mensajes entre los distintos servidores.

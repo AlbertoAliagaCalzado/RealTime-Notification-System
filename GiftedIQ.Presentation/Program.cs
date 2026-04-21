@@ -2,6 +2,7 @@ using GiftedIQ.Application.Commands.CreateNotification;
 using GiftedIQ.Application.Interfaces;
 using GiftedIQ.Domain.Repositories;
 using GiftedIQ.Infrastructure.Persistence;
+using GiftedIQ.Infrastructure.RealTime;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
@@ -28,6 +29,9 @@ builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IUnitOfWork>(provider => 
     provider.GetRequiredService<GiftedIqDbContext>());
 
+builder.Services.AddSignalR();
+builder.Services.AddScoped<INotificationDispatcher, SignalRNotificationDispatcher>();
+
 var app = builder.Build();
 
 app.UseMiddleware<GiftedIQ.Presentation.Middlewares.ExceptionMiddleware>();
@@ -43,5 +47,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<NotificationHub>("/hubs/notifications");
 
 app.Run();
