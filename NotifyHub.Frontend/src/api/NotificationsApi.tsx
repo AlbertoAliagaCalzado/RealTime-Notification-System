@@ -21,13 +21,5 @@ export const NotificationApi = {
             const errorText = await response.text();
             throw new Error(`Error en el servidor: ${response.status} - ${errorText}`);
         }
-    },
-
-    getById: async (id: string) => {
-        const response = await fetch(`${API_BASE_URL}/${id}`);
-        if (!response.ok) {
-            throw new Error("No se pudo obtener la notificación.");
-        }
-        return await response.json();
     }
 };
