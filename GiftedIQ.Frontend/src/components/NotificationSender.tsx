@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NotificationApi, CreateNotificationPayload } from '../api/NotificationsApi';
 
 export const NotificationSender: React.FC = () => {
     const [message, setMessage] = useState('');
@@ -11,7 +12,7 @@ export const NotificationSender: React.FC = () => {
 
         setIsSubmitting(true);
 
-        const payload = {
+        const payload: CreateNotificationPayload = {
             recipientId: "11111111-1111-1111-1111-111111111111",
             actorId: "22222222-2222-2222-2222-222222222222",
             type: type,
@@ -19,23 +20,11 @@ export const NotificationSender: React.FC = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:5294/api/Notification', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (response.ok) {
-                setMessage('');
-            } else {
-                console.error("Error del servidor:", await response.text());
-                alert("Hubo un error al enviar la notificación.");
-            }
+            await NotificationApi.create(payload);
+            setMessage('');
         } catch (error) {
-            console.error("Error de red:", error);
-            alert("No se pudo conectar con la API.");
+            console.error(error);
+            alert("No se pudo conectar con la API o hubo un error al enviar la notificación.");
         } finally {
             setIsSubmitting(false);
         }
@@ -76,8 +65,8 @@ export const NotificationSender: React.FC = () => {
                     type="submit"
                     disabled={isSubmitting || !message.trim()}
                     className={`w-full text-white font-medium py-2 px-4 rounded-md transition-colors ${isSubmitting || !message.trim()
-                        ? 'bg-blue-300 cursor-not-allowed'
-                        : 'bg-blue-600 hover:bg-blue-700'
+                            ? 'bg-blue-300 cursor-not-allowed'
+                            : 'bg-blue-600 hover:bg-blue-700'
                         }`}
                 >
                     {isSubmitting ? 'Enviando...' : 'Disparar Notificación'}

@@ -131,3 +131,25 @@ Trade-off: Es necesario configurar estas conversiones explícitamente por cada V
 - Justificación: Se requiere proveer notificaciones push / web en tiempo real. SignalR maneja automáticamente la negociación de protocolos y facilita la gestión de conexiones concurrentes. Se sigue respetando la Arquitectura Hexagonal.
 
 - Trade-off: Añade un estado de conexión mantenido en el servidor. Si la aplicación escala a múltiples servicios en el futuro, requerirá configurar un sistema de colas para sincronizar los mensajes entre los distintos servidores.
+
+18. Separación en Componentes Frontend
+
+- Decisión: Aislar toda la lógica de estado y red (SignalR, Fetch API) fuera de la capa de interfaz, centralizándola en Contextos, y mantener los componentes visuales (NotificationBadge, NotificationList) como elementos estrictamente presentacionales.
+
+- Justificación: Los componentes tienen responsabilidad única. Así, se garantiza que los componentes visuales sean "ignorantes" sobre el origen de los datos (no saben si vienen de un WebSocket, un mock o una API REST). Esto mejora drásticamente la mantenibilidad, facilita la creación de tests unitarios visuales y permite que el diseño escale sin enredarse con la lógica de negocio.
+
+- Trade-off: Requiere una mayor fragmentación del código inicial, lo que exige una navegación ligeramente más compleja por la estructura de carpetas, pero es vital para la limpieza al escalar el proyecto.
+
+19. Encapsulación del Estado Global mediante Custom Hooks (useNotifications)
+
+- Decisión: Prohibir la exportación e importación directa del NotificationContext en los componentes de la vista, obligando a su consumo exclusivamente a través del hook personalizado useNotifications.
+
+- Justificación: Actúa como un mecanismo de seguridad. Al encapsular useContext dentro del Custom Hook, se puede incluir lógica para verificar que se está llamando dentro de su Provider correspondiente, aislando los errores del servicio en su interior.
+
+- Trade-off: Añade unas pocas líneas de código repetitivo en el contexto para definir el hook, pero el beneficio de prevenir errores silenciosos en tiempo de ejecución (como un contexto devolviendo undefined) supera ampliamente el desarrollo inicial.
+
+20. Abstracción de Llamadas de Red (API Wrapper)
+
+- Decisión: Extraer toda la lógica de peticiones HTTP (fetch, cabeceras, manejo de URLs) desde los componentes de React hacia una capa de servicios aislada en api/NotificationsApi.
+
+- Justificación: Centraliza la configuración de la API en un único lugar. Si en el futuro se requiere añadir un Token de Autorización (JWT) en los headers, o se migra de fetch a axios, el cambio se hará en un solo archivo Los componentes de React ahora solo se encargan de la vista y delegar la acción, reduciendo el ruido.
