@@ -167,3 +167,9 @@ Trade-off: Es necesario configurar estas conversiones explícitamente por cada V
 - Decisión: Utilizar WebApplicationFactory para levantar la API en memoria durante las pruebas de integración, aislando componentes de infraestructura externos (SignalR).
 
 - Justificación: Valida que el pipeline completo (Controladores, Routing, Middlewares de error, Inyección de Dependencias, Validación JSON) funciona correctamente en conjunto. Sustituir SignalR por un mock en este punto evita la inestabilidad de abrir puertos y sockets reales.
+
+23. Contenerización (Docker)
+
+- Decisión: Contenerizar los servicios utilizando Docker con Multi-stage builds y orquestar el entorno local mediante docker-compose. Para el frontend se utiliza Nginx como servidor.
+
+- Justificación: Garantiza la inmutabilidad de los artefactos y la separacióon de entornos de Dev/Prod. El uso de Multi-stage builds (compilar con SDK/Node, pero ejecutar con ASP.NET Runtime/Nginx) reduce drásticamente el tamaño de las imágenes finales y la superficie de ataque de seguridad.

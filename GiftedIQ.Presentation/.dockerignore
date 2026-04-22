@@ -1,0 +1,10 @@
+**/.git
+**/.vs
+**/.vscode
+**/bin
+**/obj
+**/out
+**/node_modules
+**/dist
+GiftedIQ.Frontend/node_modules
+GiftedIQ.Frontend/dist
