@@ -153,3 +153,11 @@ Trade-off: Es necesario configurar estas conversiones explícitamente por cada V
 - Decisión: Extraer toda la lógica de peticiones HTTP (fetch, cabeceras, manejo de URLs) desde los componentes de React hacia una capa de servicios aislada en api/NotificationsApi.
 
 - Justificación: Centraliza la configuración de la API en un único lugar. Si en el futuro se requiere añadir un Token de Autorización (JWT) en los headers, o se migra de fetch a axios, el cambio se hará en un solo archivo Los componentes de React ahora solo se encargan de la vista y delegar la acción, reduciendo el ruido.
+
+21. Estrategia de Pruebas Unitarias (Backend)
+
+- Decisión: Implementar pruebas unitarias utilizando xUnit y Moq, enfocando el esfuerzo principalmente en la capa de Aplicación (Command/Query Handlers) y Dominio (Entidades).
+
+- Justificación: Al tener una Arquitectura Hexagonal, es sencillo aislar completamente la capa de aplicación inyectando mocks de las interfaces de infraestructura. Esto asegura que los tests sean extremadamente rápidos, predecibles y que validen estrictamente las reglas de negocio sin dependencias externas.
+
+- Trade-off: Las pruebas unitarias con mocks no garantizan que la integración real con SignalR funcione, para ello existen pruebas de integración.

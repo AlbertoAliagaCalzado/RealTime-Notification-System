@@ -14,7 +14,11 @@ public class Notification
     public bool IsRead { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    private Notification() { }
+    private Notification() 
+    { 
+        Id = null!;
+        Message = null!;
+    }
 
     public static Notification Create(Guid recipientId, Guid? actorId, NotificationType type, string message)
     {
