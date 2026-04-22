@@ -46,7 +46,7 @@ Para la ejecución contenerizada solo necesitas:
 Abre una terminal en la raíz del proyecto y ejecuta:
 
 ```bash
-   docker-compose up --build -d
+docker-compose up --build -d
 ```
 
 ### 2. Accede a las aplicaciones
@@ -61,5 +61,5 @@ Abre una terminal en la raíz del proyecto y ejecuta:
 Desde la raíz del proyecto, ejecuta:
 
 ```bash
-   dotnet test
+dotnet test
 ```
