@@ -33,7 +33,7 @@ public class NotificationsControllerTests : IClassFixture<CustomWebApplicationFa
 
         _factory.MockDispatcher.Invocations.Clear(); 
 
-        var response = await _client.PostAsJsonAsync("/api/Notifications", payload);
+        var response = await _client.PostAsJsonAsync("/api/Notification", payload);
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         _factory.MockDispatcher.Verify(d => d.DispatchToUserAsync(
